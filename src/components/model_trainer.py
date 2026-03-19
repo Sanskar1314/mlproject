@@ -46,7 +46,48 @@ class ModelTrainer:
                 "AdaBoost":AdaBoostRegressor()
             }
 
-            model_report:dict=evaluate_models(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test,models=models)
+            params={
+                "Random Forest":{
+                    "n_estimators":[100,200,300],
+                    "max_depth":[10,20,30],
+                    "min_samples_split":[2,5,10],
+                    "min_samples_leaf":[1,2,4]
+                },
+                "Decision Tree":{
+                    "max_depth":[10,20,30],
+                    "min_samples_split":[2,5,10],
+                    "min_samples_leaf":[1,2,4]
+                },
+                "Gradient Boosting":{
+                    "n_estimators":[100,200,300],
+                    "max_depth":[10,20,30],
+                    "min_samples_split":[2,5,10],
+                    "min_samples_leaf":[1,2,4]
+                },
+                "K-Nearest Neighbors":{
+                    "n_neighbors":[3,5,7,9],
+                    "weights":["uniform","distance"],
+                    "metric":["minkowski","euclidean","manhattan"]
+                },
+                "Linear Regression":{},
+                "XGBoost":{
+                    "n_estimators":[100,200,300],
+                    "max_depth":[3,5,10],
+                    "learning_rate":[0.01,0.1,0.3],
+                    "min_child_weight":[1,3,5]
+                },
+                "CatBoost":{
+                    "iterations":[100,200,300],
+                    "depth":[4,6,10],
+                    "learning_rate":[0.01,0.1,0.3]
+                },
+                "AdaBoost":{
+                    "n_estimators":[100,200,300],
+                    "learning_rate":[0.01,0.1,1]
+                }
+            }
+
+            model_report:dict=evaluate_models(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test,models=models,params=params)
 
             best_model_score=max(sorted(model_report.values()))
             best_model_name=list(model_report.keys())[
