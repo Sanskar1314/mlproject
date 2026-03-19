@@ -8,7 +8,8 @@ from dataclasses import dataclass
 
 from src.components.data_transformation import DataTransformation
 from src.components.data_transformation import DataTransformationConfig
-
+from src.components.model_trainer import ModelTrainer
+from src.components.model_trainer import ModelTrainerConfig
 
 @dataclass      # this is used so that use varibles without defining def __init__(self)
 class DataIngestionConfig:
@@ -49,4 +50,8 @@ if __name__=="__main__":
     obj=DataIngestion()
     train_data,test_data=obj.initiate_data_ingestion()
     data_transformation=DataTransformation()
-    data_transformation.initiate_data_transformation(train_data,test_data)
+    train_arr,test_arr,preprocessor_path=data_transformation.initiate_data_transformation(train_data,test_data)
+    
+    modeltrainer=ModelTrainer()
+    r2_score=modeltrainer.initiate_model_training(train_arr,test_arr,preprocessor_path)
+    print(f"R2 Score: {r2_score}")
